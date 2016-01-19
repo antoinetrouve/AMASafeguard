@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">AMASafeguard</string>
+
+    <string name="title_connexion">Connexion</string>
+    <string name="label_connexion_login">Login</string>
+    <string name="label_connexion_password">Mot de passe</string>
+    <string name="text_connexion_button">Connexion</string>
+    <string name="text_inscription_button">Inscription</string>
+    <string name="text_synchronize_button">Synchroniser</string>
 </resources>
