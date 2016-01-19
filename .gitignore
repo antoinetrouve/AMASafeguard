@@ -1,3 +1,5 @@
+
+### Android ###
 # Built application files
 *.apk
 *.ap_
@@ -30,3 +32,6 @@ proguard/
 
 # Android Studio captures folder
 captures/
+
+### Android Patch ###
+gen-external-apklibs
