@@ -7,7 +7,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.iia.amasafeguard.R;
-import com.iia.amasafeguard.data.UserSQLiteAdapter;
+
+import com.iia.amasafeguard.data.DataSQLiteAdapter;
 
 public class ConnexionActivity extends AppCompatActivity {
 
@@ -15,6 +16,9 @@ public class ConnexionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connexion);
+
+        DataSQLiteAdapter dataSqliteAdapter = new DataSQLiteAdapter(this);
+        dataSqliteAdapter.open();
 
         Button btConnexion = (Button)this.findViewById(R.id.btConnexion);
         Button btInscription = (Button)this.findViewById(R.id.btInscription);

@@ -36,7 +36,7 @@ public class ExtensionSQLiteAdapter {
     public static String getSchema(){
         return "CREATE TABLE " + TABLE_EXTENSION + " ("
                 + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COL_NAME + " TEXT NOT NULL;";
+                + COL_NAME + " TEXT NOT NULL);";
     }
 
     public void open(){

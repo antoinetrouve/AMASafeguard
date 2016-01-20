@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.iia.amasafeguard.R;
+import com.iia.amasafeguard.data.AmasafeguardSQLiteOpenHelper;
+import com.iia.amasafeguard.data.DataSQLiteAdapter;
 
 public class SynchronizeActivity extends AppCompatActivity {
 

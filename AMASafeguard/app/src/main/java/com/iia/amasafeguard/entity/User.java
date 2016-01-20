@@ -15,7 +15,7 @@ public class User {
     /**
      * User name
      */
-    protected String name;
+    protected String login;
 
     /**
      * User mot de passe
@@ -30,7 +30,9 @@ public class User {
     /**
      * User connected or not
      */
-    protected Boolean is_connected;
+    protected Integer is_connected;
+
+    protected Integer created_at;
 
     /**
      * get User id
@@ -49,19 +51,19 @@ public class User {
     }
 
     /**
-     * get User name
-     * @return name
+     * get User login
+     * @return login
      */
-    public String getName() {
-        return name;
+    public String getLogin() {
+        return login;
     }
 
     /**
-     * set User name
-     * @param name
+     * set User login
+     * @param login
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     /**
@@ -101,7 +103,7 @@ public class User {
      * get User is_connected
      * @return true or false
      */
-    public Boolean getIs_connected() {
+    public Integer getIs_connected() {
         return is_connected;
     }
 
@@ -109,8 +111,16 @@ public class User {
      * set User is_connected
      * @param is_connected
      */
-    public void setIs_connected(Boolean is_connected) {
+    public void setIs_connected(Integer is_connected) {
         this.is_connected = is_connected;
+    }
+
+    public Integer getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(Integer created_at) {
+        this.created_at = created_at;
     }
 
     /**
@@ -119,6 +129,6 @@ public class User {
      */
     @Override
     public String toString() {
-        return this.getName();
+        return this.getLogin();
     }
 }
