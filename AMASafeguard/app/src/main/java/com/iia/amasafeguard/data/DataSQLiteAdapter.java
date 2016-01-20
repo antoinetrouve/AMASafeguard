@@ -153,7 +153,7 @@ public class DataSQLiteAdapter {
         Data result = new Data();
         result.setId(c.getLong(c.getColumnIndex(COL_ID)));
         result.setName(c.getString(c.getColumnIndex(COL_NAME)));
-        result.setPath(c.getString(c.getColumnIndex(COL_NAME)));
+        result.setPath(c.getString(c.getColumnIndex(COL_PATH)));
         result.setCreated_at(c.getInt(c.getColumnIndex(COL_CREATED_AT)));
         result.setUpdated_at(c.getInt(c.getColumnIndex(COL_UPDATED_AT)));
 
