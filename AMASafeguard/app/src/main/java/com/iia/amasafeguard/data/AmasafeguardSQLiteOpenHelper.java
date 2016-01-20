@@ -23,6 +23,9 @@ public class AmasafeguardSQLiteOpenHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DataSQLiteAdapter.getSchema());
+        db.execSQL(ExtensionSQLiteAdapter.getSchema());
+        db.execSQL(TypeDataSQLiteAdapter.getSchema());
+        db.execSQL(UserSQLiteAdapter.getSchema());
     }
 
     @Override

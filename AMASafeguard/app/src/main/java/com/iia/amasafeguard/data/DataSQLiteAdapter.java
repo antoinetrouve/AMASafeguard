@@ -43,7 +43,7 @@ public class DataSQLiteAdapter {
                 + COL_NAME + " TEXT NOT NULL, "
                 + COL_PATH + " TEXT NOT NULL, "
                 + COL_CREATED_AT + " INTEGER NOT NULL, "
-                + COL_UPDATED_AT + " INTERGER NOT NULL);";
+                + COL_UPDATED_AT + " INTEGER NOT NULL);";
     }
 
     public void open(){

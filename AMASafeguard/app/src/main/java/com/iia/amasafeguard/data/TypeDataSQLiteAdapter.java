@@ -37,7 +37,7 @@ public class TypeDataSQLiteAdapter {
     public static String getSchema(){
         return "CREATE TABLE " + TABLE_TYPEDATA + " ("
                 + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COL_NAME + " TEXT NOT NULL;";
+                + COL_NAME + " TEXT NOT NULL);";
     }
 
     public void open(){
