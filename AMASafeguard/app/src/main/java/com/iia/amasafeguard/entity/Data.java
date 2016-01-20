@@ -1,8 +1,12 @@
 package com.iia.amasafeguard.entity;
 
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
- * Les 15 choix qui correspondent au configurateur d'un véhicule.
- * Utile pour retrouver toutes les informations renseignées par le client sur le site internet lors de la création de son dossier.
  * Created by alexis on 19/01/2016.
  */
 public class Data {
@@ -17,10 +21,10 @@ public class Data {
     protected String path;
 
     /** Data Created_at */
-    protected Integer created_at;
+    protected String created_at;
 
     /** Data Updated_at */
-    protected Integer updated_at;
+    protected String updated_at;
 
     /**
      * Get Data Id
@@ -58,7 +62,7 @@ public class Data {
      * Get Data Created_at
      * @return created_at
      */
-    public Integer getCreated_at() {
+    public String getCreated_at() {
         return created_at;
     }
 
@@ -66,8 +70,10 @@ public class Data {
      * Set Data Created_at
      * @param created_at
      */
-    public void setCreated_at(Integer created_at) {
-        this.created_at = created_at;
+    public void setCreated_at(String created_at) {
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd:MMMM:yyyy HH:mm:ss a");
+        this.created_at = sdf.format(c.getTime());
     }
 
     /**
@@ -90,7 +96,7 @@ public class Data {
      * Get Data Updated_at
      * @return updated_at
      */
-    public Integer getUpdated_at() {
+    public String getUpdated_at() {
         return updated_at;
     }
 
@@ -98,8 +104,10 @@ public class Data {
      * Set Data Updated_at
      * @param updated_at
      */
-    public void setUpdated_at(Integer updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdated_at(String updated_at) {
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd:MMMM:yyyy HH:mm:ss a");
+        this.updated_at = sdf.format(c.getTime());
     }
 
     @Override

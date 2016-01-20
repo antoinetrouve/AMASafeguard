@@ -42,8 +42,8 @@ public class DataSQLiteAdapter {
                 + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COL_NAME + " TEXT NOT NULL, "
                 + COL_PATH + " TEXT NOT NULL, "
-                + COL_CREATED_AT + " INTEGER NOT NULL, "
-                + COL_UPDATED_AT + " INTERGER NOT NULL);";
+                + COL_CREATED_AT + " TEXT NOT NULL, "
+                + COL_UPDATED_AT + " TEXT NOT NULL);";
     }
 
     public void open(){
@@ -60,7 +60,7 @@ public class DataSQLiteAdapter {
      * @return line result
      */
     public long insert(Data data){
-        return db.insert(TABLE_DATA, null, this.dataToContenValues(data));
+        return db.insert(TABLE_DATA, null, this.dataToContentValues(data));
     }
 
     /**
@@ -69,7 +69,7 @@ public class DataSQLiteAdapter {
      * @return line result
      */
     public long update(Data data){
-        ContentValues valuesUpdate = this.dataToContenValues(data);
+        ContentValues valuesUpdate = this.dataToContentValues(data);
         String whereClausesUpdate = COL_ID + "= ?";
         String[] whereArgsUpdate =  {String.valueOf(data.getId())};
 
@@ -134,7 +134,7 @@ public class DataSQLiteAdapter {
      * @param data
      * @return ContentValue
      */
-    private ContentValues dataToContenValues(Data data){
+    private ContentValues dataToContentValues(Data data){
         ContentValues values = new ContentValues();
         values.put(COL_NAME, data.getName());
         values.put(COL_PATH, data.getPath());
@@ -154,8 +154,8 @@ public class DataSQLiteAdapter {
         result.setId(c.getLong(c.getColumnIndex(COL_ID)));
         result.setName(c.getString(c.getColumnIndex(COL_NAME)));
         result.setPath(c.getString(c.getColumnIndex(COL_PATH)));
-        result.setCreated_at(c.getInt(c.getColumnIndex(COL_CREATED_AT)));
-        result.setUpdated_at(c.getInt(c.getColumnIndex(COL_UPDATED_AT)));
+        result.setCreated_at(c.getString(c.getColumnIndex(COL_CREATED_AT)));
+        result.setUpdated_at(c.getString(c.getColumnIndex(COL_UPDATED_AT)));
 
         return result;
     }

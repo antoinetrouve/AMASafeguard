@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.iia.amasafeguard.entity.Data;
 import com.iia.amasafeguard.entity.TypeData;
 
 import java.util.ArrayList;
@@ -54,7 +53,7 @@ public class TypeDataSQLiteAdapter {
      * @return line result
      */
     public long insert(TypeData typeData){
-        return db.insert(TABLE_TYPEDATA, null, this.typeDataToContenValues(typeData));
+        return db.insert(TABLE_TYPEDATA, null, this.typeDataToContentValues(typeData));
     }
 
     /**
@@ -63,7 +62,7 @@ public class TypeDataSQLiteAdapter {
      * @return line result
      */
     public long update(TypeData typeData){
-        ContentValues valuesUpdate = this.typeDataToContenValues(typeData);
+        ContentValues valuesUpdate = this.typeDataToContentValues(typeData);
         String whereClausesUpdate = COL_ID + "= ?";
         String[] whereArgsUpdate =  {String.valueOf(typeData.getId())};
 
@@ -128,7 +127,7 @@ public class TypeDataSQLiteAdapter {
      * @param typeData
      * @return ContentValue
      */
-    private ContentValues typeDataToContenValues(TypeData typeData){
+    private ContentValues typeDataToContentValues(TypeData typeData){
         ContentValues values = new ContentValues();
         values.put(COL_NAME, typeData.getName());
 

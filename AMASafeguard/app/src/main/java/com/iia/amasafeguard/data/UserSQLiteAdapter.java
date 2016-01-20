@@ -1,5 +1,7 @@
 package com.iia.amasafeguard.data;
 
+import android.view.View;
+
 /**
  * Created by antoi on 19/01/2016.
  */

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.iia.amasafeguard.R;
+import com.iia.amasafeguard.data.UserSQLiteAdapter;
 
 public class ConnexionActivity extends AppCompatActivity {
 
@@ -21,6 +22,8 @@ public class ConnexionActivity extends AppCompatActivity {
         btConnexion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //UserSQLiteAdapter userSqlAdapter = new UserSQLiteAdapter(ConnexionActivity.this);
+                //userSqlAdapter
                 Intent intent = new Intent(ConnexionActivity.this, SynchronizeActivity.class);
                 startActivity(intent);
             }

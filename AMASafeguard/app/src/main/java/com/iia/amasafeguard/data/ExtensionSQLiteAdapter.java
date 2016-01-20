@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.iia.amasafeguard.entity.Extension;
-import com.iia.amasafeguard.entity.TypeData;
 
 import java.util.ArrayList;
 
@@ -54,7 +53,7 @@ public class ExtensionSQLiteAdapter {
      * @return line result
      */
     public long insert(Extension extension){
-        return db.insert(TABLE_EXTENSION, null, this.typeDataToContenValues(extension));
+        return db.insert(TABLE_EXTENSION, null, this.typeDataToContentValues(extension));
     }
 
     /**
@@ -63,7 +62,7 @@ public class ExtensionSQLiteAdapter {
      * @return line result
      */
     public long update(Extension typeData){
-        ContentValues valuesUpdate = this.typeDataToContenValues(typeData);
+        ContentValues valuesUpdate = this.typeDataToContentValues(typeData);
         String whereClausesUpdate = COL_ID + "= ?";
         String[] whereArgsUpdate =  {String.valueOf(typeData.getId())};
 
@@ -127,7 +126,7 @@ public class ExtensionSQLiteAdapter {
      * @param extension
      * @return ContentValue
      */
-    private ContentValues typeDataToContenValues(Extension extension){
+    private ContentValues typeDataToContentValues(Extension extension){
         ContentValues values = new ContentValues();
         values.put(COL_NAME, extension.getName());
 
