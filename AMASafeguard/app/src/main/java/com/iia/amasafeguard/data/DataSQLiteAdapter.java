@@ -139,8 +139,8 @@ public class DataSQLiteAdapter {
         ContentValues values = new ContentValues();
         values.put(COL_NAME, data.getName());
         values.put(COL_PATH, data.getPath());
-        values.put(COL_CREATED_AT, data.getCreated_at().toString());
-        values.put(COL_UPDATED_AT, data.getUpdated_at().toString());
+        values.put(COL_CREATED_AT, data.getCreated_at());
+        values.put(COL_UPDATED_AT, data.getUpdated_at());
 
         return values;
     }
@@ -155,8 +155,8 @@ public class DataSQLiteAdapter {
         result.setId(c.getLong(c.getColumnIndex(COL_ID)));
         result.setName(c.getString(c.getColumnIndex(COL_NAME)));
         result.setPath(c.getString(c.getColumnIndex(COL_PATH)));
-        result.setCreated_at(c.getString(c.getColumnIndex(COL_CREATED_AT)));
-        result.setUpdated_at(c.getString(c.getColumnIndex(COL_UPDATED_AT)));
+        result.setCreated_at();
+        result.setUpdated_at();
 
         return result;
     }

@@ -111,7 +111,21 @@ public class UserSQLiteAdapter {
             cursor.moveToFirst();
             result = cursorToItem(cursor);
         }
+        return result;
+    }
 
+    public User getUserWithLoginPassword(String login, String password){
+        String[] cols = {COL_ID, COL_LOGIN, COL_MDP, COL_UUID, COL_ISCONNECTED, COL_CREATED_AT};
+        String whereClausesSelect = COL_LOGIN + "=? AND " + COL_MDP + " =?";
+        String[] whereArgsSelect = {String.valueOf(login), String.valueOf(password)};
+
+        Cursor cursor = db.query(TABLE_USER, cols, whereClausesSelect, whereArgsSelect, null, null, null);
+        User result = null;
+
+        if (cursor.getCount() > 0){
+            cursor.moveToFirst();
+            result = cursorToItem(cursor);
+        }
         return result;
     }
 
@@ -161,9 +175,9 @@ public class UserSQLiteAdapter {
         result.setId(cursor.getLong(cursor.getColumnIndex(COL_ID)));
         result.setLogin(cursor.getString(cursor.getColumnIndex(COL_LOGIN)));
         result.setMdp(cursor.getString(cursor.getColumnIndex(COL_MDP)));
-        result.setUuid(cursor.getString(cursor.getColumnIndex(COL_UUID)));
+        result.setUuid();
         result.setIs_connected(cursor.getInt(cursor.getColumnIndex(COL_ISCONNECTED)));
-        result.setCreated_at(cursor.getInt(cursor.getColumnIndex(COL_CREATED_AT)));
+        result.setCreated_at();
 
         return result;
     }

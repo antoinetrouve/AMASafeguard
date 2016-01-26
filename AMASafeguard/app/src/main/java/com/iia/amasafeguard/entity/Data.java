@@ -68,9 +68,8 @@ public class Data {
 
     /**
      * Set Data Created_at
-     * @param created_at
      */
-    public void setCreated_at(String created_at) {
+    public void setCreated_at() {
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("dd:MMMM:yyyy HH:mm:ss a");
         this.created_at = sdf.format(c.getTime());
@@ -102,9 +101,9 @@ public class Data {
 
     /**
      * Set Data Updated_at
-     * @param updated_at
+     * @param
      */
-    public void setUpdated_at(String updated_at) {
+    public void setUpdated_at() {
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("dd:MMMM:yyyy HH:mm:ss a");
         this.updated_at = sdf.format(c.getTime());

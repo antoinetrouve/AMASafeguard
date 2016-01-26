@@ -1,5 +1,7 @@
 package com.iia.amasafeguard.entity;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.UUID;
 
 /**
@@ -32,7 +34,10 @@ public class User {
      */
     protected Integer is_connected;
 
-    protected Integer created_at;
+    /**
+     * User Date Created
+     */
+    protected String created_at;
 
     /**
      * get User id
@@ -92,9 +97,8 @@ public class User {
 
     /**
      * set User uuid
-     * @param uuid
      */
-    public void setUuid(String uuid) {
+    public void setUuid() {
         // Generation UUID UNIQUE for User
         this.uuid =  UUID.randomUUID().toString();
     }
@@ -115,12 +119,14 @@ public class User {
         this.is_connected = is_connected;
     }
 
-    public Integer getCreated_at() {
+    public String getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(Integer created_at) {
-        this.created_at = created_at;
+    public void setCreated_at() {
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd:MMMM:yyyy HH:mm:ss a");
+        this.created_at = sdf.format(c.getTime());
     }
 
     /**
