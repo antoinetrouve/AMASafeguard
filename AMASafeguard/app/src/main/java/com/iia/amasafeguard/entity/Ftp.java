@@ -14,7 +14,7 @@ import org.apache.commons.net.ftp.FTPFile;
 import java.io.IOException;
 
 /**
- * Created by antoine on 20/01/2016.
+ * Created by Antoine Trouvé on 20/01/2016.
  */
 public class Ftp extends Activity implements OnClickListener {
 
