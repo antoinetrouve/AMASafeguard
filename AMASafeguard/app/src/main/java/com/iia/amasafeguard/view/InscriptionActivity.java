@@ -51,23 +51,24 @@ public class InscriptionActivity extends AppCompatActivity {
                     //hashing password and convert hash code to string
                     password = Generator.toHexString(Generator.sha256(password));
                     //Generates cryptographically secure pseudo-random numbers
-                    SecureRandom rs = new SecureRandom();
+                    //SecureRandom rs = new SecureRandom();
                     //Generates and stores random bytes
-                    rs.nextBytes(salt);
+                    //rs.nextBytes(salt);
                     //Derivation hashed password
-                    km = Generator.derivKm(password, count, salt);
+                    //km = Generator.derivKm(password, count, salt);
                     //Derivation hashed password into 1 keys (ka)
-                    ka = Generator.derivKa(km);
+                    //ka = Generator.derivKa(km);
                     //encode password to base64 URL_SAFE to save in database
-                    user.setMdp(Base64.encodeToString(ka,Base64.URL_SAFE));
+                    //user.setMdp(Base64.encodeToString(ka, Base64.URL_SAFE));
+                    user.setMdp(password);
 
                     user.setCreated_at();
                     user.setUuid();
                     user.setIs_connected(0);
                     user.setId(userAdapter.insert(user));
-
-                    Toast.makeText(context, "Votre compte à bien été créer.", Toast.LENGTH_LONG).show();
-
+                    if (user.getId() != 0){
+                        Toast.makeText(context, "Votre compte à bien été créer.", Toast.LENGTH_LONG).show();
+                    }
                     userAdapter.close();
                 }
             }

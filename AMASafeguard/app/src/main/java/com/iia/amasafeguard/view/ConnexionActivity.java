@@ -22,10 +22,10 @@ import java.security.SecureRandom;
 public class ConnexionActivity extends AppCompatActivity {
 
     private String password;
-    private byte[] km;
-    private byte[] ka;
-    private int count = 30;
-    private byte[] salt = new byte[8];
+    //private byte[] km;
+    //private byte[] ka;
+    //private int count = 30;
+    //private byte[] salt = new byte[8];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,27 +43,21 @@ public class ConnexionActivity extends AppCompatActivity {
 
                 UserSQLiteAdapter userSqlAdapter = new UserSQLiteAdapter(ConnexionActivity.this);
                 userSqlAdapter.open();
-                // récupérer le password
+                // GET PASSWORD AND COMPARE WITH DATABASE
                 //get password
-//                password = etPassword.getText().toString();
-//                //hashing password and convert hash code to string
-//                password = Generator.toHexString(Generator.sha256(password));
-//                //Generates cryptographically secure pseudo-random numbers
-//                SecureRandom rs = new SecureRandom();
-//                //Generates and stores random bytes
-//                rs.nextBytes(salt);
-//                //Derivation hashed password
-//                km = Generator.derivKm(password, count, salt);
-//                //Derivation hashed password into 1 keys (ka)
-//                ka = Generator.derivKa(km);
-//                password = Base64.encodeToString(ka, Base64.URL_SAFE);
-
-                User result = userSqlAdapter.getUserWithLoginPassword(etLogin.getText().toString(), etPassword.getText().toString());
-//                if(result.getMdp().equalsIgnoreCase(password)){
-//                    Log.d("egal",password);
-//                }
-                // si result != null && password = result
-                //&& (password.equalsIgnoreCase(result.getMdp()))
+                password = etPassword.getText().toString();
+                //hashing password and convert hash code to string
+                password = Generator.toHexString(Generator.sha256(password));
+                //Generates cryptographically secure pseudo-random numbers
+                //SecureRandom rs = new SecureRandom();
+                //Generates and stores random bytes
+                //rs.nextBytes(salt);
+                //Derivation hashed password
+                //km = Generator.derivKm(password, count, salt);
+                //Derivation hashed password into 1 keys (ka)
+                //ka = Generator.derivKa(km);
+                //password = Base64.encodeToString(ka, Base64.URL_SAFE);
+                User result = userSqlAdapter.getUserWithLoginPassword(etLogin.getText().toString(), password);
                 if ((result != null) ){
                     result.setIs_connected(1);
                     userSqlAdapter.update(result);
