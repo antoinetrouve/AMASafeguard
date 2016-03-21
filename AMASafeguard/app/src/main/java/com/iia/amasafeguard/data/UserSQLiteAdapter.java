@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.iia.amasafeguard.entity.User;
 
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**

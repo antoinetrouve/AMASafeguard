@@ -14,13 +14,13 @@ import org.apache.commons.net.ftp.FTPFile;
 import java.io.IOException;
 
 /**
- * Created by antoine on 20/01/2016.
+ * Created by Antoine Trouvé on 20/01/2016.
  */
 public class Ftp extends Activity implements OnClickListener {
 
-    private static final String FTP_HOST = "@ipServeurFTP";
+    private static final String FTP_HOST = "172.20.10.4";
     private static final String FTP_USER = "amasafeguard";
-    private static final String FTP_PWD = "XXXXX";
+    private static final String FTP_PWD = "amasafeguard";
 
 
     @Override
@@ -69,16 +69,16 @@ public class Ftp extends Activity implements OnClickListener {
     /**
      * Asynchrone task to manage synchronization
      */
-    public class LoadTask extends AsyncTask<Void, Void, Boolean>{
+    /*public class LoadTask extends AsyncTask<Void, Void, Boolean>{
 
         private Context ctx;
-        private Boolean is_connected;
+        private Boolean is_connected;*/
 
         /**
          *
          * @param context
          */
-        public LoadTask(Context context) {
+        /*public LoadTask(Context context) {
             this.ctx = context;
         }
 
@@ -111,7 +111,7 @@ public class Ftp extends Activity implements OnClickListener {
             }
             super.onPostExecute(is_connected);
         }
-    }
+    }*/
 }
 
 

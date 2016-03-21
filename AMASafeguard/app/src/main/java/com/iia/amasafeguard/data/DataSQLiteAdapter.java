@@ -88,7 +88,7 @@ public class DataSQLiteAdapter {
         String whereClausesSelect = COL_ID + "= ?";
         String[] whereArgsSelect = {String.valueOf(id)};
 
-        Cursor c = db.query(TABLE_DATA, cols, whereClausesSelect, whereArgsSelect, null, null, null);
+        Cursor c = db.query(TABLE_DATA, cols, whereClausesSelect, whereArgsSelect,null, null, null);
 
         Data result = null;
 
