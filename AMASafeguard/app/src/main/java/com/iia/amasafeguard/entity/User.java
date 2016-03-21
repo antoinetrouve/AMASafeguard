@@ -1,11 +1,13 @@
 package com.iia.amasafeguard.entity;
 
+import java.sql.Blob;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.UUID;
 
+
 /**
- * Created by antoi on 19/01/2016.
+ * Created by Antoine Trouvé on 19/01/2016.
  */
 public class User {
 
