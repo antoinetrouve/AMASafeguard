@@ -12,12 +12,9 @@ import android.widget.Toast;
 
 import com.iia.amasafeguard.R;
 
-import com.iia.amasafeguard.data.DataSQLiteAdapter;
 import com.iia.amasafeguard.data.UserSQLiteAdapter;
 import com.iia.amasafeguard.entity.Generator;
 import com.iia.amasafeguard.entity.User;
-
-import java.security.SecureRandom;
 
 public class ConnexionActivity extends AppCompatActivity {
 
@@ -45,7 +42,6 @@ public class ConnexionActivity extends AppCompatActivity {
                 userSqlAdapter.open();
                 // GET PASSWORD AND COMPARE WITH DATABASE
                 //get password
-
                 password = etPassword.getText().toString();
                 //hashing password and convert hash code to string
                 password = Generator.toHexString(Generator.sha256(password));
@@ -59,6 +55,7 @@ public class ConnexionActivity extends AppCompatActivity {
                 //ka = Generator.derivKa(km);
                 //password = Base64.encodeToString(ka, Base64.URL_SAFE);
                 User result = userSqlAdapter.getUserWithLoginPassword(etLogin.getText().toString(), password);
+
                 if (result != null){
                     result.setIs_connected(1);
                     userSqlAdapter.update(result);
