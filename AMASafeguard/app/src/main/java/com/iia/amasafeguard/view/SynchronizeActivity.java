@@ -39,9 +39,12 @@ public class SynchronizeActivity extends AppCompatActivity {
         protected Boolean doInBackground(String... urls) {
             try {
                 Log.d("PASSE", "ICI");
+
                 String filename = "/Test/test.txt";
-                String filepath = Environment.getExternalStorageDirectory().getPath() + filename;
+                String filepath = Environment.getDataDirectory().getPath() + filename;
                 File file = new File(filepath);
+
+
                 client = Ftp.FtpConnection();
                 client.enterLocalPassiveMode();
                 Log.d("PASSE", "ICI 2");

@@ -1,6 +1,7 @@
 package com.iia.amasafeguard.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -69,6 +70,11 @@ public class InscriptionActivity extends AppCompatActivity {
                     Toast.makeText(context, "Votre compte à bien été créer.", Toast.LENGTH_LONG).show();
 
                     userAdapter.close();
+
+                    Intent intent = new Intent(InscriptionActivity.this, ConnexionActivity.class);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(context, "Login ou password non renseigné.", Toast.LENGTH_LONG).show();
                 }
             }
         });

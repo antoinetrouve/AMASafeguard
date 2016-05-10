@@ -58,23 +58,23 @@ public class ConnexionActivity extends AppCompatActivity {
 //                ka = Generator.derivKa(km);
 //                password = Base64.encodeToString(ka, Base64.URL_SAFE);
 
-                User result = userSqlAdapter.getUserWithLoginPassword(etLogin.getText().toString(), etPassword.getText().toString());
+                //User result = userSqlAdapter.getUserWithLoginPassword(etLogin.getText().toString(), etPassword.getText().toString());
 //                if(result.getMdp().equalsIgnoreCase(password)){
 //                    Log.d("egal",password);
 //                }
                 // si result != null && password = result
                 //&& (password.equalsIgnoreCase(result.getMdp()))
-                if ((result != null) ){
-                    result.setIs_connected(1);
-                    userSqlAdapter.update(result);
-                    userSqlAdapter.close();
+                //if ((result == null) ){
+                //    result.setIs_connected(1);
+                //    userSqlAdapter.update(result);
+                //    userSqlAdapter.close();
                     Intent intent = new Intent(ConnexionActivity.this, SynchronizeActivity.class);
-                    intent.putExtra("ID", result.getId());
+                //    intent.putExtra("ID", result.getId());
                     startActivity(intent);
-                }else {
-                    Toast.makeText(ConnexionActivity.this, "Votre Login ou Password est incorrecte !", Toast.LENGTH_LONG).show();
-                }
-                userSqlAdapter.close();
+                //}else {
+                //    Toast.makeText(ConnexionActivity.this, "Votre Login ou Password est incorrecte !", Toast.LENGTH_LONG).show();
+                //}
+                //userSqlAdapter.close();
             }
         });
 
