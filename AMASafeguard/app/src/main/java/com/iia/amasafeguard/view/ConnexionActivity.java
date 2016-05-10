@@ -61,7 +61,7 @@ public class ConnexionActivity extends AppCompatActivity {
                 User result = userSqlAdapter.getUserWithLoginPassword(etLogin.getText().toString(), password);
                 if (result != null){
                     result.setIs_connected(1);
-                    //userSqlAdapter.update(result);
+                    userSqlAdapter.update(result);
                     userSqlAdapter.close();
                     Intent intent = new Intent(ConnexionActivity.this, SynchronizeActivity.class);
                     Bundle bundle = new Bundle();
