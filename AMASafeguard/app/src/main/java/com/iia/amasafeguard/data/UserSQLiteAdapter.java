@@ -177,7 +177,7 @@ public class UserSQLiteAdapter {
         result.setId(cursor.getLong(cursor.getColumnIndex(COL_ID)));
         result.setLogin(cursor.getString(cursor.getColumnIndex(COL_LOGIN)));
         result.setMdp(cursor.getString(cursor.getColumnIndex(COL_MDP)));
-        result.setUuid();
+        result.setUuid(cursor.getString(cursor.getColumnIndex(COL_UUID)));
         result.setIs_connected(cursor.getInt(cursor.getColumnIndex(COL_ISCONNECTED)));
         result.setCreated_at();
 

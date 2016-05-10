@@ -18,7 +18,7 @@ import java.io.IOException;
  */
 public class Ftp extends Activity implements OnClickListener {
 
-    private static final String FTP_HOST = "172.20.10.4";
+    private static final String FTP_HOST = "172.20.10.6";
     private static final String FTP_USER = "amasafeguard";
     private static final String FTP_PWD = "amasafeguard";
 
