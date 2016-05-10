@@ -34,7 +34,7 @@ import java.util.ArrayList;
 public class SynchronizeActivity extends AppCompatActivity {
 
     private static final String PATH_CONF_FILE = "/Test/test.txt";
-    Button btSynchronize = (Button)this.findViewById(R.id.btSynchronize);
+    Button btSynchronize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +43,8 @@ public class SynchronizeActivity extends AppCompatActivity {
 
         //StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         //StrictMode.setThreadPolicy(policy);
+
+        btSynchronize = (Button)this.findViewById(R.id.btSynchronize);
 
         Bundle b = this.getIntent().getExtras();
         String uuid = b.getString("UUID");
@@ -62,16 +64,12 @@ public class SynchronizeActivity extends AppCompatActivity {
 
         protected Boolean doInBackground(String... urls) {
             try {
-<<<<<<< HEAD
-                Log.d("PASSE", "ICI");
 
-=======
                 String filename = "/Test/test.txt";
                 String filepath = Environment.getDataDirectory().getPath() + filename;
                 File file = new File(filepath);
 
                 //CONNECTION with login and password
->>>>>>> 7b8a4e6a03b2f8a04b2ef81afd51a21ffeebe59c
                 client = Ftp.FtpConnection();
 
                 boolean success = false;
