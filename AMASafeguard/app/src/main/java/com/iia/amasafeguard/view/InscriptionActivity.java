@@ -48,7 +48,7 @@ public class InscriptionActivity extends AppCompatActivity {
                     //MANAGE PASSWORD
                     //get password
                     password = etLoginInscription.getText().toString();
-                    //hashing password and convert hash code to string
+                    //hashing password and conv ert hash code to string
                     password = Generator.toHexString(Generator.sha256(password));
                     //Generates cryptographically secure pseudo-random numbers
                     SecureRandom rs = new SecureRandom();
