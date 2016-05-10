@@ -22,8 +22,8 @@ public class DataSQLiteAdapter {
     public static final String COL_CREATED_AT = "created_at";
     public static final String COL_UPDATED_AT = "updated_at";
 
-    private SQLiteDatabase db;
-    private AmasafeguardSQLiteOpenHelper helper;
+    private static SQLiteDatabase db;
+    private static AmasafeguardSQLiteOpenHelper helper;
 
     /**
      * Helper Object to access db
@@ -47,12 +47,12 @@ public class DataSQLiteAdapter {
 
     }
 
-    public void open(){
-        this.db = this.helper.getWritableDatabase();
+    public static void open(){
+        DataSQLiteAdapter.db = DataSQLiteAdapter.helper.getWritableDatabase();
     }
 
-    public void close(){
-        this.db.close();
+    public static void close(){
+        DataSQLiteAdapter.db.close();
     }
 
     /**
@@ -60,8 +60,8 @@ public class DataSQLiteAdapter {
      * @param data
      * @return line result
      */
-    public long insert(Data data){
-        return db.insert(TABLE_DATA, null, this.dataToContentValues(data));
+    public static long insert(Data data){
+        return db.insert(TABLE_DATA, null, DataSQLiteAdapter.dataToContentValues(data));
     }
 
     /**
@@ -69,8 +69,8 @@ public class DataSQLiteAdapter {
      * @param data
      * @return line result
      */
-    public long update(Data data){
-        ContentValues valuesUpdate = this.dataToContentValues(data);
+    public static long update(Data data){
+        ContentValues valuesUpdate = DataSQLiteAdapter.dataToContentValues(data);
         String whereClausesUpdate = COL_ID + "= ?";
         String[] whereArgsUpdate =  {String.valueOf(data.getId())};
 
@@ -87,6 +87,29 @@ public class DataSQLiteAdapter {
         String[] cols = {COL_ID, COL_NAME, COL_PATH, COL_CREATED_AT, COL_UPDATED_AT};
         String whereClausesSelect = COL_ID + "= ?";
         String[] whereArgsSelect = {String.valueOf(id)};
+
+        Cursor c = db.query(TABLE_DATA, cols, whereClausesSelect, whereArgsSelect,null, null, null);
+
+        Data result = null;
+
+        if (c.getCount() > 0){
+            c.moveToFirst();
+            result = cursorToItem(c);
+        }
+
+        return result;
+    }
+
+    /**
+     * Select a Data with his Path.
+     * @param path
+     * @return Data
+     */
+    public static Data getDataByPath(String path){
+
+        String[] cols = {COL_ID, COL_NAME, COL_PATH, COL_CREATED_AT, COL_UPDATED_AT};
+        String whereClausesSelect = COL_PATH + "= ?";
+        String[] whereArgsSelect = {String.valueOf(path)};
 
         Cursor c = db.query(TABLE_DATA, cols, whereClausesSelect, whereArgsSelect,null, null, null);
 
@@ -135,7 +158,7 @@ public class DataSQLiteAdapter {
      * @param data
      * @return ContentValue
      */
-    private ContentValues dataToContentValues(Data data){
+    private static ContentValues dataToContentValues(Data data){
         ContentValues values = new ContentValues();
         values.put(COL_NAME, data.getName());
         values.put(COL_PATH, data.getPath());
@@ -150,13 +173,13 @@ public class DataSQLiteAdapter {
      * @param c
      * @return Data
      */
-    public Data cursorToItem(Cursor c){
+    public static Data cursorToItem(Cursor c){
         Data result = new Data();
         result.setId(c.getLong(c.getColumnIndex(COL_ID)));
         result.setName(c.getString(c.getColumnIndex(COL_NAME)));
         result.setPath(c.getString(c.getColumnIndex(COL_PATH)));
-        result.setCreated_at();
-        result.setUpdated_at();
+        result.setCreated_at(c.getString(c.getColumnIndex(COL_CREATED_AT)));
+        result.setUpdated_at(c.getString(c.getColumnIndex(COL_UPDATED_AT)));
 
         return result;
     }

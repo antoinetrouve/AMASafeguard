@@ -68,7 +68,7 @@ public class InscriptionActivity extends AppCompatActivity {
                     user.setIs_connected(0);
                     user.setId(userAdapter.insert(user));
                     if (user.getId() != 0){
-                        Toast.makeText(context, "Votre compte à bien été créer.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Votre compte à bien été créé.", Toast.LENGTH_LONG).show();
                     }
                     userAdapter.close();
 

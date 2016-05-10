@@ -68,11 +68,10 @@ public class Data {
 
     /**
      * Set Data Created_at
+     * @param created_at
      */
-    public void setCreated_at() {
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd:MMMM:yyyy HH:mm:ss a");
-        this.created_at = sdf.format(c.getTime());
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
     }
 
     /**
@@ -101,12 +100,10 @@ public class Data {
 
     /**
      * Set Data Updated_at
-     * @param
+     * @param updated_at
      */
-    public void setUpdated_at() {
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd:MMMM:yyyy HH:mm:ss a");
-        this.updated_at = sdf.format(c.getTime());
+    public void setUpdated_at(String updated_at) {
+        this.updated_at = updated_at;
     }
 
     @Override

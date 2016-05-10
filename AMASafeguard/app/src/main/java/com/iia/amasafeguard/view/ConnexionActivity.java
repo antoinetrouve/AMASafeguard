@@ -59,7 +59,7 @@ public class ConnexionActivity extends AppCompatActivity {
                 //ka = Generator.derivKa(km);
                 //password = Base64.encodeToString(ka, Base64.URL_SAFE);
                 User result = userSqlAdapter.getUserWithLoginPassword(etLogin.getText().toString(), password);
-                if ((result != null) ){
+                if ((result != null)) {
                     result.setIs_connected(1);
                     userSqlAdapter.update(result);
                     userSqlAdapter.close();
@@ -70,6 +70,7 @@ public class ConnexionActivity extends AppCompatActivity {
 //                    Toast.makeText(ConnexionActivity.this, "Votre Login ou Password est incorrecte !", Toast.LENGTH_LONG).show();
 //                }
 //                userSqlAdapter.close();
+                }
             }
         });
 
