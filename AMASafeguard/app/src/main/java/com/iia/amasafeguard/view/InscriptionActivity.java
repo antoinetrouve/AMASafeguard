@@ -61,14 +61,14 @@ public class InscriptionActivity extends AppCompatActivity {
                     //ka = Generator.derivKa(km);
                     //encode password to base64 URL_SAFE to save in database
                     //user.setMdp(Base64.encodeToString(ka, Base64.URL_SAFE));
+                    String uuid = null;
                     user.setMdp(password);
-
                     user.setCreated_at();
-                    user.setUuid();
+                    user.setUuid(uuid);
                     user.setIs_connected(0);
                     user.setId(userAdapter.insert(user));
                     if (user.getId() != 0){
-                        Toast.makeText(context, "Votre compte à bien été créé.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Votre compte à bien été crée.", Toast.LENGTH_LONG).show();
                     }
                     userAdapter.close();
 

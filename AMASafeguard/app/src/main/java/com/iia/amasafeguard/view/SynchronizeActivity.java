@@ -18,6 +18,7 @@ import com.iia.amasafeguard.entity.Ftp;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPReply;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -40,40 +41,62 @@ public class SynchronizeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_synchronize);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+        //StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        //StrictMode.setThreadPolicy(policy);
 
-        new myAsyncTask().execute();
+        Bundle b = this.getIntent().getExtras();
+        String uuid = b.getString("UUID");
+
+        new myAsyncTask(uuid).execute();
     }
 
     class myAsyncTask extends AsyncTask<String, Void, Boolean> {
 
         private FTPClient client;
+        private String uuid;
+
+        //Constructor to get uuid user
+        public myAsyncTask(String uuid) {
+            this.uuid = uuid;
+        }
 
         protected Boolean doInBackground(String... urls) {
             try {
+<<<<<<< HEAD
                 Log.d("PASSE", "ICI");
 
-                client = Ftp.FtpConnection();
-                boolean success = false;
-                client.changeWorkingDirectory("test");
-                int returnCode = client.getReplyCode();
+=======
+                String filename = "/Test/test.txt";
+                String filepath = Environment.getDataDirectory().getPath() + filename;
+                File file = new File(filepath);
 
-                if(returnCode == 500){
-                    success = client.makeDirectory("test");
+                //CONNECTION with login and password
+>>>>>>> 7b8a4e6a03b2f8a04b2ef81afd51a21ffeebe59c
+                client = Ftp.FtpConnection();
+
+                boolean success = false;
+
+                //Verify FTP connection
+                int returnCode = client.getReplyCode();
+                if(!FTPReply.isPositiveCompletion(returnCode)){
+                    System.out.println("Connect failed");
+                    return false;
+                }
+
+                //if directory doesn't exist make it
+                if(!client.changeWorkingDirectory("/Amasafeguard/" + this.uuid)) {
+                    client.makeDirectory("/Amasafeguard/" + this.uuid);
                 }
 
                 client.logout();
-
-                if(success){
-                    return true;
-                }
                 client.disconnect();
+
+                return true;
             } catch (IOException e) {
                 //Log.e("FTP", e.toString());
                 e.printStackTrace();
             } catch (Throwable e) {
-                Log.d("PASSE", "CATCH");
+                e.printStackTrace();
             }
             return false;
         }
@@ -136,7 +159,7 @@ public class SynchronizeActivity extends AppCompatActivity {
             // TODO: check this.exception
             // TODO: do something with the feed
             if(b){
-                Toast.makeText(SynchronizeActivity.this,"Dossier crée !!",Toast.LENGTH_LONG).show();
+                Toast.makeText(SynchronizeActivity.this,"Dossier crée antoine est chaud !!",Toast.LENGTH_LONG).show();
             }else{
                 Toast.makeText(SynchronizeActivity.this,"Antoine a fait de la merde!",Toast.LENGTH_LONG).show();
             }

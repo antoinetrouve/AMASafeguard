@@ -100,9 +100,13 @@ public class User {
     /**
      * set User uuid
      */
-    public void setUuid() {
-        // Generation UUID UNIQUE for User
-        this.uuid =  UUID.randomUUID().toString();
+    public void setUuid(String uuid) {
+        if(uuid != null){
+            this.uuid = uuid;
+        }else{
+            // Generation UUID UNIQUE for User
+            this.uuid =  UUID.randomUUID().toString();
+        }
     }
 
     /**
