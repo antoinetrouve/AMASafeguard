@@ -44,21 +44,21 @@ public class SynchronizeActivity extends AppCompatActivity {
                 String filepath = Environment.getDataDirectory().getPath() + filename;
                 File file = new File(filepath);
 
-
                 client = Ftp.FtpConnection();
-                client.enterLocalPassiveMode();
-                Log.d("PASSE", "ICI 2");
-                client.setFileType(FTP.BINARY_FILE_TYPE);
-                Log.d("PASSE", "ICI 3");
-                FileInputStream fis = new FileInputStream(file.getName());
-                Log.d("PASSE", "ICI 4");
-                client.storeFile("test.txt", fis);
-                Log.d("PASSE", "ICI 5");
-                fis.close();
-                Log.d("PASSE", "ICI 6");
+                boolean success = false;
+                client.changeWorkingDirectory("test");
+                int returnCode = client.getReplyCode();
+
+                if(returnCode == 500){
+                    success = client.makeDirectory("test");
+                }
+
                 client.logout();
+
+                if(success){
+                    return true;
+                }
                 client.disconnect();
-                return true;
             } catch (IOException e) {
                 //Log.e("FTP", e.toString());
                 e.printStackTrace();
@@ -72,14 +72,7 @@ public class SynchronizeActivity extends AppCompatActivity {
             // TODO: check this.exception
             // TODO: do something with the feed
             if(b){
-                Toast.makeText(SynchronizeActivity.this,"Fichier crée !!",Toast.LENGTH_LONG).show();
-                /*try {
-                    //client.makeDirectory("Test");
-                    Toast.makeText(SynchronizeActivity.this,"Dossier created",Toast.LENGTH_LONG).show();
-                } catch (IOException e) {
-                    Log.d("ftp",e.toString());
-                    e.printStackTrace();
-                }*/
+                Toast.makeText(SynchronizeActivity.this,"Dossier crée !!",Toast.LENGTH_LONG).show();
             }else{
                 Toast.makeText(SynchronizeActivity.this,"Antoine a fait de la merde!",Toast.LENGTH_LONG).show();
             }
