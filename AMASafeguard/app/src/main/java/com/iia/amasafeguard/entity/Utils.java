@@ -59,7 +59,7 @@ public class Utils{
         }
     }
 
-    public static boolean protectSymetricFile(FTPClient client)
+    public static boolean protectSymetricFile(FTPClient client, File file)
     {
         SecureRandom sr = new SecureRandom();
 
@@ -74,7 +74,7 @@ public class Utils{
 
         // 03-b. read file
         byte[] plainData;
-        plainData = ReadSettings().getBytes();
+        plainData = ReadSettings(file).getBytes();
 
         // 03-c. compute encryption
         final byte[] encryptedData = encrypt(plainData, CONST_KC, iv);
@@ -89,9 +89,7 @@ public class Utils{
      * Read file
      * @return content
      */
-    public static String ReadSettings() {
-        String str = "/TestEncryptedData.txt";
-        File confFile = new File(Environment.getDataDirectory().getPath() + str);
+    public static String ReadSettings(File confFile) {
         String content = "";
         ArrayList<File> arrayFile = new ArrayList();
 

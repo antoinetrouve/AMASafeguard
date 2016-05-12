@@ -87,10 +87,7 @@ public class SynchronizeActivity extends AppCompatActivity {
                     client.makeDirectory("/Amasafeguard/" + this.uuid);
                 }
 
-                Utils.protectSymetricFile(client);
 
-                client.logout();
-                client.disconnect();
 
                 return true;
             } catch (IOException e) {
@@ -120,7 +117,9 @@ public class SynchronizeActivity extends AppCompatActivity {
 
                         while ((ligne=br.readLine())!=null){
                             File file = new File(ligne);
-                            arrayFile.add(file);
+                            if (file.exists()){
+                                arrayFile.add(file);
+                            }
                         }
                         br.close();
                     }
@@ -135,20 +134,31 @@ public class SynchronizeActivity extends AppCompatActivity {
                         Data fileDb = DataSQLiteAdapter.getDataByPath(file.getPath());
                         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 
-                        if (!fileDb.getUpdated_at().equals(sdf.format(file.lastModified())) || fileDb == null){
-                            Data data = new Data();
-                            data.setName(file.getName());
-                            data.setPath(file.getPath());
-                            data.setCreated_at(sdf.format(String.valueOf(file.lastModified())));
-                            data.setUpdated_at(sdf.format(String.valueOf(file.lastModified())));
+                        if (!fileDb.getUpdated_at().equals(sdf.format(file.lastModified()))){
 
-                            if(fileDb == null){
-                                //Insert
-                                DataSQLiteAdapter.insert(data);
-                            }else{
-                                //Update
-                                DataSQLiteAdapter.update(data);
-                            }
+                            DataSQLiteAdapter.update(fileDb);
+
+                        }
+                        if (fileDb == null){
+                            fileDb = new Data();
+                            fileDb.setName(file.getName());
+                            fileDb.setPath(file.getPath());
+                            fileDb.setCreated_at(sdf.format(String.valueOf(file.lastModified())));
+                            fileDb.setUpdated_at(sdf.format(String.valueOf(file.lastModified())));
+                            DataSQLiteAdapter.insert(fileDb);
+                        }
+
+                        Utils.protectSymetricFile(client, file);
+
+                        try {
+                            client.logout();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            client.disconnect();
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
                     }
 
