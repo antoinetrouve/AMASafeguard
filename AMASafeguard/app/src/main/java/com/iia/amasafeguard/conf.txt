@@ -1,0 +1,3 @@
+/app/com.iia.amasafeguard-1/conf.txt
+/app/com.iia.amasafeguard-1/base.apk
+/bugreports

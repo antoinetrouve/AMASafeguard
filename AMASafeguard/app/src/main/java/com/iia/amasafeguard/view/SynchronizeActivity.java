@@ -30,11 +30,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class SynchronizeActivity extends AppCompatActivity {
 
-    private static final String PATH_CONF_FILE = "/Test/test.txt";
+    private static final String PATH_CONF_FILE = "/conf.txt";
     Button btSynchronize;
 
     @Override
@@ -64,7 +65,7 @@ public class SynchronizeActivity extends AppCompatActivity {
         }
 
         protected Boolean doInBackground(String... urls) {
-            try {
+           try {
 
                 String filename = "/Test/test.txt";
                 String filepath = Environment.getDataDirectory().getPath() + filename;
@@ -96,7 +97,7 @@ public class SynchronizeActivity extends AppCompatActivity {
             } catch (Throwable e) {
                 e.printStackTrace();
             }
-            return false;
+            return true;
         }
 
         protected void onPostExecute(Boolean b) {
@@ -108,6 +109,8 @@ public class SynchronizeActivity extends AppCompatActivity {
                     File confFile = new File(Environment.getDataDirectory().getPath() + PATH_CONF_FILE);
                     String content ="";
                     ArrayList<File> arrayFile = new ArrayList();
+
+                    Boolean exist = confFile.exists();
 
                     try{
                         InputStream ips = new FileInputStream(confFile);
@@ -127,7 +130,8 @@ public class SynchronizeActivity extends AppCompatActivity {
                         System.out.println(e.toString());
                     }
 
-                    DataSQLiteAdapter.open();
+                    DataSQLiteAdapter dataSQLiteAdapter = new DataSQLiteAdapter(SynchronizeActivity.this);
+                    dataSQLiteAdapter.open();
 
                     //Boucle foreach sur le tableau de File
                     for (File file: arrayFile) {
@@ -160,9 +164,15 @@ public class SynchronizeActivity extends AppCompatActivity {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+
+                        if(file.exists() == false) {
+                            Toast.makeText(SynchronizeActivity.this, "Le dossier " + file.getName() + " n'éxiste pas !", Toast.LENGTH_LONG).show();
+                        }
                     }
 
-                    DataSQLiteAdapter.close();
+                    dataSQLiteAdapter.close();
+
+                    Toast.makeText(SynchronizeActivity.this, "Dossier synchronisé avec la DB !", Toast.LENGTH_LONG).show();
                 }
             });
 
