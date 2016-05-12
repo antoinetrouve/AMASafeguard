@@ -41,6 +41,7 @@ public class ConnexionActivity extends AppCompatActivity {
                 //hashing password and convert hash code to string
                 password = Generator.toHexString(Generator.sha256(password));
                 User result = userSqlAdapter.getUserWithLoginPassword(etLogin.getText().toString(), password);
+
                 if (result != null){
                     result.setIs_connected(1);
                     userSqlAdapter.update(result);
