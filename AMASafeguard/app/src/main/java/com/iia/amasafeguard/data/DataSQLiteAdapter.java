@@ -22,8 +22,8 @@ public class DataSQLiteAdapter {
     public static final String COL_CREATED_AT = "created_at";
     public static final String COL_UPDATED_AT = "updated_at";
 
-    private static SQLiteDatabase db;
-    private static AmasafeguardSQLiteOpenHelper helper;
+    private SQLiteDatabase db;
+    private AmasafeguardSQLiteOpenHelper helper;
 
     /**
      * Helper Object to access db
@@ -47,12 +47,12 @@ public class DataSQLiteAdapter {
 
     }
 
-    public static void open(){
-        DataSQLiteAdapter.db = DataSQLiteAdapter.helper.getWritableDatabase();
+    public void open(){
+        this.db = this.helper.getWritableDatabase();
     }
 
-    public static void close(){
-        DataSQLiteAdapter.db.close();
+    public void close(){
+        this.db.close();
     }
 
     /**
@@ -60,8 +60,8 @@ public class DataSQLiteAdapter {
      * @param data
      * @return line result
      */
-    public static long insert(Data data){
-        return db.insert(TABLE_DATA, null, DataSQLiteAdapter.dataToContentValues(data));
+    public long insert(Data data){
+        return db.insert(TABLE_DATA, null, this.dataToContentValues(data));
     }
 
     /**
@@ -69,8 +69,8 @@ public class DataSQLiteAdapter {
      * @param data
      * @return line result
      */
-    public static long update(Data data){
-        ContentValues valuesUpdate = DataSQLiteAdapter.dataToContentValues(data);
+    public long update(Data data){
+        ContentValues valuesUpdate = this.dataToContentValues(data);
         String whereClausesUpdate = COL_ID + "= ?";
         String[] whereArgsUpdate =  {String.valueOf(data.getId())};
 
@@ -105,7 +105,7 @@ public class DataSQLiteAdapter {
      * @param path
      * @return Data
      */
-    public static Data getDataByPath(String path){
+    public Data getDataByPath(String path){
 
         String[] cols = {COL_ID, COL_NAME, COL_PATH, COL_CREATED_AT, COL_UPDATED_AT};
         String whereClausesSelect = COL_PATH + "= ?";
@@ -158,7 +158,7 @@ public class DataSQLiteAdapter {
      * @param data
      * @return ContentValue
      */
-    private static ContentValues dataToContentValues(Data data){
+    private ContentValues dataToContentValues(Data data){
         ContentValues values = new ContentValues();
         values.put(COL_NAME, data.getName());
         values.put(COL_PATH, data.getPath());
@@ -173,7 +173,7 @@ public class DataSQLiteAdapter {
      * @param c
      * @return Data
      */
-    public static Data cursorToItem(Cursor c){
+    public Data cursorToItem(Cursor c){
         Data result = new Data();
         result.setId(c.getLong(c.getColumnIndex(COL_ID)));
         result.setName(c.getString(c.getColumnIndex(COL_NAME)));

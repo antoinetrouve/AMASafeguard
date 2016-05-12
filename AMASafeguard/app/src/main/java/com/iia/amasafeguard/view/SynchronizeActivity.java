@@ -29,11 +29,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class SynchronizeActivity extends AppCompatActivity {
 
-    private static final String PATH_CONF_FILE = "/Test/test.txt";
+    private static final String PATH_CONF_FILE = "/conf.txt";
     Button btSynchronize;
 
     @Override
@@ -63,7 +64,7 @@ public class SynchronizeActivity extends AppCompatActivity {
         }
 
         protected Boolean doInBackground(String... urls) {
-            try {
+           try {
 
                 String filename = "/Test/test.txt";
                 String filepath = Environment.getDataDirectory().getPath() + filename;
@@ -96,7 +97,7 @@ public class SynchronizeActivity extends AppCompatActivity {
             } catch (Throwable e) {
                 e.printStackTrace();
             }
-            return false;
+            return true;
         }
 
         protected void onPostExecute(Boolean b) {
@@ -109,6 +110,8 @@ public class SynchronizeActivity extends AppCompatActivity {
                     String content ="";
                     ArrayList<File> arrayFile = new ArrayList();
 
+                    Boolean exist = confFile.exists();
+
                     try{
                         InputStream ips = new FileInputStream(confFile);
                         InputStreamReader ipsr = new InputStreamReader(ips);
@@ -116,7 +119,7 @@ public class SynchronizeActivity extends AppCompatActivity {
                         String ligne;
 
                         while ((ligne=br.readLine())!=null){
-                            File file = new File(ligne);
+                            File file = new File(Environment.getDataDirectory().getPath() + ligne);
                             arrayFile.add(file);
                         }
                         br.close();
@@ -125,31 +128,37 @@ public class SynchronizeActivity extends AppCompatActivity {
                         System.out.println(e.toString());
                     }
 
-                    DataSQLiteAdapter.open();
+                    DataSQLiteAdapter dataSQLiteAdapter = new DataSQLiteAdapter(SynchronizeActivity.this);
+                    dataSQLiteAdapter.open();
 
                     //Boucle foreach sur le tableau de File
                     for (File file: arrayFile) {
-                        Data fileDb = DataSQLiteAdapter.getDataByPath(file.getPath());
-                        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-
-                        if (!fileDb.getUpdated_at().equals(sdf.format(file.lastModified())) || fileDb == null){
+                        Data fileDb = dataSQLiteAdapter.getDataByPath(file.getPath());
+                        Date d = new Date(file.lastModified());
+                        
+                        if ((file.exists() && fileDb == null) || (file.exists() && !d.equals(fileDb.getUpdated_at()))){
                             Data data = new Data();
                             data.setName(file.getName());
                             data.setPath(file.getPath());
-                            data.setCreated_at(sdf.format(String.valueOf(file.lastModified())));
-                            data.setUpdated_at(sdf.format(String.valueOf(file.lastModified())));
+                            data.setCreated_at(String.valueOf(d));
+                            data.setUpdated_at(String.valueOf(d));
 
                             if(fileDb == null){
                                 //Insert
-                                DataSQLiteAdapter.insert(data);
+                                dataSQLiteAdapter.insert(data);
                             }else{
                                 //Update
-                                DataSQLiteAdapter.update(data);
+                                dataSQLiteAdapter.update(data);
                             }
+                        }
+                        if(file.exists() == false) {
+                            Toast.makeText(SynchronizeActivity.this, "Le dossier " + file.getName() + " n'éxiste pas !", Toast.LENGTH_LONG).show();
                         }
                     }
 
-                    DataSQLiteAdapter.close();
+                    dataSQLiteAdapter.close();
+
+                    Toast.makeText(SynchronizeActivity.this, "Dossier synchronisé avec la DB !", Toast.LENGTH_LONG).show();
                 }
             });
 
