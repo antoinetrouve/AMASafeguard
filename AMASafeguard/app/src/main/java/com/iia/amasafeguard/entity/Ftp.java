@@ -11,6 +11,7 @@ import android.widget.Toast;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -18,7 +19,7 @@ import java.io.IOException;
  */
 public class Ftp extends Activity implements OnClickListener {
 
-    private static final String FTP_HOST = "172.20.10.6";
+    private static final String FTP_HOST = "192.168.100.58";
     private static final String FTP_USER = "amasafeguard";
     private static final String FTP_PWD = "amasafeguard";
 
@@ -51,7 +52,7 @@ public class Ftp extends Activity implements OnClickListener {
      * @param ftpclient
      * @return null
      */
-    public static void Synchronize(FTPClient ftpclient){
+    /*public static void Synchronize(FTPClient ftpclient){
         //Send file modified (or created) to ftp
         File downloadfile = new File();
         String filepath = "chemin de destination sur srv ftp";
@@ -64,7 +65,7 @@ public class Ftp extends Activity implements OnClickListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     /**
      * Asynchrone task to manage synchronization

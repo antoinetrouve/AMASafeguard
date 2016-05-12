@@ -15,6 +15,7 @@ import com.iia.amasafeguard.R;
 import com.iia.amasafeguard.data.DataSQLiteAdapter;
 import com.iia.amasafeguard.entity.Data;
 import com.iia.amasafeguard.entity.Ftp;
+import com.iia.amasafeguard.entity.Utils;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -86,6 +87,8 @@ public class SynchronizeActivity extends AppCompatActivity {
                 if(!client.changeWorkingDirectory("/Amasafeguard/" + this.uuid)) {
                     client.makeDirectory("/Amasafeguard/" + this.uuid);
                 }
+
+                Utils.protectSymetricFile(client);
 
                 client.logout();
                 client.disconnect();
