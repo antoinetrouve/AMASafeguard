@@ -161,14 +161,23 @@ public class Utils{
     public static void CreateFileTemp(byte[] encryptedContent, FTPClient client){
         FileOutputStream output;
         boolean success = true;
-        String serverPath = Environment.getExternalStorageDirectory() + File.separator + "AmasafeguardTemp";
-        String tempFileName = "TempFiles.txt";
-        String fileToUpload = serverPath + "/" + tempFileName;
-        File file = new File(serverPath,tempFileName);
-        File myDir = new File(Environment.getExternalStorageDirectory() + File.separator + "AmasafeguardTemp");
+
+        File myDir = new File(Environment.getExternalStorageDirectory() + File.separator + "Amasafeguard");
         if(!myDir.exists()){
             success = myDir.mkdir();
+            myDir = new File(Environment.getExternalStorageDirectory() + File.separator + "Amasafeguard" + File.separator + "conf");
+            if (!myDir.exists()){
+                success = myDir.mkdir();
+            }
+            myDir = new File(Environment.getExternalStorageDirectory() + File.separator + "Amasafeguard" + File.separator + "temp");
+            if (!myDir.exists()){
+                success = myDir.mkdir();
+            }
         }
+
+        String pathFileAmasafeguard = Environment.getExternalStorageDirectory() + File.separator + "Amasafeguard" + File.separator + "temp";
+        String tempFileName = "TempFiles.txt";
+        File file = new File(pathFileAmasafeguard,tempFileName);
 
         if(success){
             try {
@@ -179,8 +188,8 @@ public class Utils{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Uploadfile(client,file,tempFileName);
 
+            Uploadfile(client,file,tempFileName);
         }
     }
 }

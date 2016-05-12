@@ -35,7 +35,7 @@ import java.util.Date;
 
 public class SynchronizeActivity extends AppCompatActivity {
 
-    private static final String PATH_CONF_FILE = "/conf.txt";
+    private static final String PATH_CONF_FILE = "Amasafeguard/conf/conf.txt";
     Button btSynchronize;
 
     @Override
@@ -67,9 +67,18 @@ public class SynchronizeActivity extends AppCompatActivity {
         protected Boolean doInBackground(String... urls) {
            try {
 
-                String filename = "/Test/test.txt";
-                String filepath = Environment.getDataDirectory().getPath() + filename;
-                File file = new File(filepath);
+               File myDir = new File(Environment.getExternalStorageDirectory() + File.separator + "Amasafeguard");
+               if(!myDir.exists()){
+                   myDir.mkdir();
+                   myDir = new File(Environment.getExternalStorageDirectory() + File.separator + "Amasafeguard" + File.separator + "conf");
+                   if (!myDir.exists()){
+                       myDir.mkdir();
+                   }
+                   myDir = new File(Environment.getExternalStorageDirectory() + File.separator + "Amasafeguard" + File.separator + "temp");
+                   if (!myDir.exists()){
+                       myDir.mkdir();
+                   }
+               }
 
                 //CONNECTION with login and password
                 client = Ftp.FtpConnection();
@@ -88,8 +97,6 @@ public class SynchronizeActivity extends AppCompatActivity {
                     client.makeDirectory("/Amasafeguard/" + this.uuid);
                 }
 
-
-
                 return true;
             } catch (IOException e) {
                 //Log.e("FTP", e.toString());
@@ -106,11 +113,9 @@ public class SynchronizeActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     //Récupération du fichier de conf
-                    File confFile = new File(Environment.getDataDirectory().getPath() + PATH_CONF_FILE);
+                    File confFile = new File(Environment.getExternalStorageDirectory().getPath() + PATH_CONF_FILE);
                     String content ="";
                     ArrayList<File> arrayFile = new ArrayList();
-
-                    Boolean exist = confFile.exists();
 
                     try{
                         InputStream ips = new FileInputStream(confFile);
@@ -122,12 +127,14 @@ public class SynchronizeActivity extends AppCompatActivity {
                             File file = new File(ligne);
                             if (file.exists()){
                                 arrayFile.add(file);
+                            }else{
+                                Toast.makeText(SynchronizeActivity.this, "Le dossier " + file.getName() + " n'éxiste pas !", Toast.LENGTH_LONG).show();
                             }
                         }
                         br.close();
                     }
                     catch (Exception e){
-                        System.out.println(e.toString());
+                        System.out.println("Lecture du fichier de conf impossible");
                     }
 
                     DataSQLiteAdapter dataSQLiteAdapter = new DataSQLiteAdapter(SynchronizeActivity.this);
@@ -135,12 +142,13 @@ public class SynchronizeActivity extends AppCompatActivity {
 
                     //Boucle foreach sur le tableau de File
                     for (File file: arrayFile) {
-                        Data fileDb = DataSQLiteAdapter.getDataByPath(file.getPath());
+                        Data fileDb = dataSQLiteAdapter.getDataByPath(file.getPath());
                         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 
                         if (!fileDb.getUpdated_at().equals(sdf.format(file.lastModified()))){
 
-                            DataSQLiteAdapter.update(fileDb);
+                            dataSQLiteAdapter.update(fileDb);
+                            Utils.protectSymetricFile(client, file);
 
                         }
                         if (fileDb == null){
@@ -149,10 +157,10 @@ public class SynchronizeActivity extends AppCompatActivity {
                             fileDb.setPath(file.getPath());
                             fileDb.setCreated_at(sdf.format(String.valueOf(file.lastModified())));
                             fileDb.setUpdated_at(sdf.format(String.valueOf(file.lastModified())));
-                            DataSQLiteAdapter.insert(fileDb);
-                        }
 
-                        Utils.protectSymetricFile(client, file);
+                            dataSQLiteAdapter.insert(fileDb);
+                            Utils.protectSymetricFile(client, file);
+                        }
 
                         try {
                             client.logout();
@@ -163,10 +171,6 @@ public class SynchronizeActivity extends AppCompatActivity {
                             client.disconnect();
                         } catch (IOException e) {
                             e.printStackTrace();
-                        }
-
-                        if(file.exists() == false) {
-                            Toast.makeText(SynchronizeActivity.this, "Le dossier " + file.getName() + " n'éxiste pas !", Toast.LENGTH_LONG).show();
                         }
                     }
 
