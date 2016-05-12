@@ -3,8 +3,6 @@ package com.iia.amasafeguard.view;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,14 +13,11 @@ import com.iia.amasafeguard.R;
 import com.iia.amasafeguard.data.UserSQLiteAdapter;
 import com.iia.amasafeguard.entity.Generator;
 import com.iia.amasafeguard.entity.User;
+import com.iia.amasafeguard.entity.Utils;
 
 public class ConnexionActivity extends AppCompatActivity {
 
     private String password;
-    //private byte[] km;
-    //private byte[] ka;
-    //private int count = 30;
-    //private byte[] salt = new byte[8];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,15 +40,6 @@ public class ConnexionActivity extends AppCompatActivity {
                 password = etPassword.getText().toString();
                 //hashing password and convert hash code to string
                 password = Generator.toHexString(Generator.sha256(password));
-                //Generates cryptographically secure pseudo-random numbers
-                //SecureRandom rs = new SecureRandom();
-                //Generates and stores random bytes
-                //rs.nextBytes(salt);
-                //Derivation hashed password
-                //km = Generator.derivKm(password, count, salt);
-                //Derivation hashed password into 1 keys (ka)
-                //ka = Generator.derivKa(km);
-                //password = Base64.encodeToString(ka, Base64.URL_SAFE);
                 User result = userSqlAdapter.getUserWithLoginPassword(etLogin.getText().toString(), password);
                 if (result != null){
                     result.setIs_connected(1);
