@@ -52,7 +52,7 @@ public class Utils{
             boolean done = ftpClient.storeFile(tempFileName, inputStream);
             inputStream.close();
             if (done){
-                System.out.println("Petit message que tu veux !");
+                System.out.println("Succès de UploadFile");
             }
         } catch (Exception e) {
             e.printStackTrace();

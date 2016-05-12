@@ -25,6 +25,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -35,7 +36,7 @@ import java.util.Date;
 
 public class SynchronizeActivity extends AppCompatActivity {
 
-    private static final String PATH_CONF_FILE = "Amasafeguard/conf/conf.txt";
+    private static final String PATH_CONF_FILE = "/Amasafeguard/conf/conf.txt";
     Button btSynchronize;
 
     @Override
@@ -58,6 +59,7 @@ public class SynchronizeActivity extends AppCompatActivity {
 
         private FTPClient client;
         private String uuid;
+        FileOutputStream output;
 
         //Constructor to get uuid user
         public myAsyncTask(String uuid) {
@@ -66,6 +68,8 @@ public class SynchronizeActivity extends AppCompatActivity {
 
         protected Boolean doInBackground(String... urls) {
            try {
+
+               String pathFileAmasafeguard = Environment.getExternalStorageDirectory() + File.separator + "Amasafeguard" + File.separator + "conf";
 
                File myDir = new File(Environment.getExternalStorageDirectory() + File.separator + "Amasafeguard");
                if(!myDir.exists()){
@@ -78,6 +82,14 @@ public class SynchronizeActivity extends AppCompatActivity {
                    if (!myDir.exists()){
                        myDir.mkdir();
                    }
+               }
+
+               File file = new File(pathFileAmasafeguard, "conf.txt");
+               if (!file.exists()){
+                   byte[] confText = file.getPath().getBytes();
+                   output = new FileOutputStream(file,true);
+                   output.write(confText);
+                   output.close();
                }
 
                 //CONNECTION with login and password
@@ -134,7 +146,7 @@ public class SynchronizeActivity extends AppCompatActivity {
                         br.close();
                     }
                     catch (Exception e){
-                        System.out.println("Lecture du fichier de conf impossible");
+                        e.printStackTrace();
                     }
 
                     DataSQLiteAdapter dataSQLiteAdapter = new DataSQLiteAdapter(SynchronizeActivity.this);
@@ -142,23 +154,23 @@ public class SynchronizeActivity extends AppCompatActivity {
 
                     //Boucle foreach sur le tableau de File
                     for (File file: arrayFile) {
-                        Data fileDb = dataSQLiteAdapter.getDataByPath(file.getPath());
+
                         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+                        Data fileDb = dataSQLiteAdapter.getDataByPath(file.getPath());
 
-                        if (!fileDb.getUpdated_at().equals(sdf.format(file.lastModified()))){
-
-                            dataSQLiteAdapter.update(fileDb);
-                            Utils.protectSymetricFile(client, file);
-
-                        }
                         if (fileDb == null){
                             fileDb = new Data();
                             fileDb.setName(file.getName());
                             fileDb.setPath(file.getPath());
-                            fileDb.setCreated_at(sdf.format(String.valueOf(file.lastModified())));
-                            fileDb.setUpdated_at(sdf.format(String.valueOf(file.lastModified())));
+                            fileDb.setCreated_at(sdf.format(file.lastModified()));
+                            fileDb.setUpdated_at(sdf.format(file.lastModified()));
 
                             dataSQLiteAdapter.insert(fileDb);
+                            Utils.protectSymetricFile(client, file);
+                        }
+
+                        if (!fileDb.getUpdated_at().equals(sdf.format(file.lastModified()))){
+                            dataSQLiteAdapter.update(fileDb);
                             Utils.protectSymetricFile(client, file);
                         }
 
@@ -184,9 +196,9 @@ public class SynchronizeActivity extends AppCompatActivity {
             // TODO: check this.exception
             // TODO: do something with the feed
             if(b){
-                Toast.makeText(SynchronizeActivity.this,"Dossier crée antoine est chaud !!",Toast.LENGTH_LONG).show();
+                Toast.makeText(SynchronizeActivity.this,"Succès de l'envoie de fichier au FTP",Toast.LENGTH_LONG).show();
             }else{
-                Toast.makeText(SynchronizeActivity.this,"Antoine a fait de la merde!",Toast.LENGTH_LONG).show();
+                Toast.makeText(SynchronizeActivity.this,"Echec de l'envoie de fichier au FTP",Toast.LENGTH_LONG).show();
             }
         }
     }
