@@ -169,6 +169,8 @@ public class SynchronizeActivity extends AppCompatActivity {
                                 InputStream in = new FileInputStream(fileCypher);
                                 client.storeFile(File.separator + CONST_PATH_AMASAFEGUARD + File.separator + uuid + File.separator + fileCypher.getName(), in);
                                 in.close();
+
+                                fileCypher.delete();
                             }
 
                             if (!fileDb.getUpdated_at().equals(sdf.format(file.lastModified()))) {
@@ -179,6 +181,8 @@ public class SynchronizeActivity extends AppCompatActivity {
                                 InputStream in = new FileInputStream(fileCypher);
                                 client.storeFile(File.separator + CONST_PATH_AMASAFEGUARD + File.separator + uuid + File.separator + fileCypher.getName(), in);
                                 in.close();
+
+                                fileCypher.delete();
                             }
 
                         }
@@ -196,13 +200,10 @@ public class SynchronizeActivity extends AppCompatActivity {
                 }
             });
 
-
-            // TODO: check this.exception
-            // TODO: do something with the feed
             if(b){
-                Toast.makeText(SynchronizeActivity.this,"Succès de l'envoie de fichier au FTP",Toast.LENGTH_LONG).show();
+                Toast.makeText(SynchronizeActivity.this,"Succès de connection au FTP",Toast.LENGTH_LONG).show();
             }else{
-                Toast.makeText(SynchronizeActivity.this,"Echec de l'envoie de fichier au FTP",Toast.LENGTH_LONG).show();
+                Toast.makeText(SynchronizeActivity.this,"Echec de connection au FTP",Toast.LENGTH_LONG).show();
             }
         }
     }
