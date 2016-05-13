@@ -15,9 +15,11 @@ import com.iia.amasafeguard.entity.Generator;
 import com.iia.amasafeguard.entity.User;
 import com.iia.amasafeguard.entity.Utils;
 
+
 public class ConnexionActivity extends AppCompatActivity {
 
     private String password;
+    public static final String CONST_UUID = "UUID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +50,7 @@ public class ConnexionActivity extends AppCompatActivity {
                     userSqlAdapter.close();
                     Intent intent = new Intent(ConnexionActivity.this, SynchronizeActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("UUID", result.getUuid());
+                    bundle.putSerializable(CONST_UUID, result.getUuid());
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }else {

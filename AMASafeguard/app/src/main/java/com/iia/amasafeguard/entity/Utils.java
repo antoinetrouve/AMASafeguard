@@ -1,10 +1,14 @@
 package com.iia.amasafeguard.entity;
 
+import android.content.Context;
 import android.graphics.Path;
 import android.os.Environment;
+import android.util.Log;
+import android.widget.Toast;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.io.ToNetASCIIInputStream;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -33,33 +37,24 @@ import javax.crypto.spec.SecretKeySpec;
 import static android.os.Environment.getDataDirectory;
 
 /**
+ * Manage encrypted data
  * Created by antoine on 20/01/2016.
  */
 public class Utils{
 
     public static final byte[] CONST_KC = new byte[16];
+    public static final String CONST_AMASAFEGUARD = "Amasafeguard";
+    public static final String CONST_FILETEMP = "temp";
+
 
     /**
-     *
-     * @param ftpClient
-     * @param uploadFile (local file which need to be uploaded).
-     * @param tempFileName
+     * Generate encrypted key
+     * @param client
+     * @param file
+     * @param uuid
+     * @return file encrypted
      */
-    public static void Uploadfile(FTPClient ftpClient,File uploadFile,String tempFileName){
-        try {
-            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-            InputStream inputStream = new FileInputStream(uploadFile);
-            boolean done = ftpClient.storeFile(tempFileName, inputStream);
-            inputStream.close();
-            if (done){
-                System.out.println("Petit message que tu veux !");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static boolean protectSymetricFile(FTPClient client)
+    public static File protectSymetricFile(FTPClient client, File file, String uuid)
     {
         SecureRandom sr = new SecureRandom();
 
@@ -74,35 +69,32 @@ public class Utils{
 
         // 03-b. read file
         byte[] plainData;
-        plainData = ReadSettings().getBytes();
+        plainData = ReadSettings(file).getBytes();
 
         // 03-c. compute encryption
         final byte[] encryptedData = encrypt(plainData, CONST_KC, iv);
 
         //04- Create encrypted temp file
-        CreateFileTemp(encryptedData,client);
+        File fileCypher = CreateFileTemp(encryptedData,client, uuid, file.getName());
 
-        return true;
+        return fileCypher;
     }
 
     /**
      * Read file
      * @return content
      */
-    public static String ReadSettings() {
-        String str = "/TestEncryptedData.txt";
-        File confFile = new File(Environment.getDataDirectory().getPath() + str);
+    public static String ReadSettings(File confFile) {
         String content = "";
-        ArrayList<File> arrayFile = new ArrayList();
+        String line = "";
 
         try {
             InputStream ips = new FileInputStream(confFile);
             InputStreamReader ipsr = new InputStreamReader(ips);
             BufferedReader br = new BufferedReader(ipsr);
-            String ligne;
 
-            while ((ligne = br.readLine()) != null) {
-                content += ligne;
+            while ((line = br.readLine()) != null) {
+                content += line;
             }
             br.close();
         } catch (Exception e) {
@@ -111,6 +103,13 @@ public class Utils{
         return content;
     }
 
+    /**
+     * Encrypt file
+     * @param input
+     * @param key
+     * @param iv
+     * @return byte[]
+     */
     public static final byte[] encrypt(final byte[] input, final byte[] key, final byte[] iv)
     {
         try
@@ -136,53 +135,29 @@ public class Utils{
         return null;
     }
 
-    public static final byte[] mac_protect(final byte[] input, final byte[] key)
-    {
-        try
-        {
-            // Mac
-            Mac hMac = Mac.getInstance("HmacSHA256");
-            // key
-            SecretKey macKey = new SecretKeySpec(key, "HMACSHA256");
-            // Initialize the Mac with key
-            hMac.init(macKey);
+    /**
+     * Create temporary file
+     * @param encryptedContent
+     * @param client
+     * @param uuid
+     * @param fileName
+     * @return file
+     */
+    public static File CreateFileTemp(byte[] encryptedContent, FTPClient client, String uuid, String fileName){
+        FileOutputStream output;
+        String pathFileAmasafeguard = Environment.getExternalStorageDirectory() + File.separator + CONST_AMASAFEGUARD + File.separator + CONST_FILETEMP;
 
-            // Compute HMAC value
-            final byte[] macDigest = hMac.doFinal(input);
+        File file = new File(pathFileAmasafeguard,fileName);
 
-            return macDigest;
-        }
-        catch (NoSuchAlgorithmException | InvalidKeyException e)
-        {
+        try {
+            output = new FileOutputStream(file,true);
+            output.write(encryptedContent);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return null;
-    }
-
-    public static void CreateFileTemp(byte[] encryptedContent, FTPClient client){
-        FileOutputStream output;
-        boolean success = true;
-        String serverPath = Environment.getExternalStorageDirectory() + File.separator + "AmasafeguardTemp";
-        String tempFileName = "TempFiles.txt";
-        String fileToUpload = serverPath + "/" + tempFileName;
-        File file = new File(serverPath,tempFileName);
-        File myDir = new File(Environment.getExternalStorageDirectory() + File.separator + "AmasafeguardTemp");
-        if(!myDir.exists()){
-            success = myDir.mkdir();
-        }
-
-        if(success){
-            try {
-                output = new FileOutputStream(file,true);
-                output.write(encryptedContent);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Uploadfile(client,file,tempFileName);
-
-        }
+        return file;
     }
 }
